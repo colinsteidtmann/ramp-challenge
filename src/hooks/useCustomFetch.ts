@@ -34,6 +34,7 @@ export function useCustomFetch() {
       params?: TParams
     ): Promise<TData | null> =>
       wrappedRequest<TData>(async () => {
+        
         const result = await fakeFetch<TData>(endpoint, params)
         return result
       }),
@@ -67,9 +68,33 @@ export function useCustomFetch() {
     [cache]
   )
 
+  // const updateTransactionCache = useCallback((transactionId: string, newValue: boolean) => {
+  //   if (cache?.current === undefined) {
+  //     return
+  //   }
+
+  //   const cacheKeys = Array.from(cache.current.keys())
+
+  //   for (const key of cacheKeys) {
+  //     if (key.startsWith("transaction:") && key.endsWith(transactionId)) {
+  //       // Update or remove cache entry based on the newValue
+  //       if (newValue) {
+  //         // Update cache with the new transaction data
+  //         console.log("hello")
+  //         cache.current.set(key, JSON.stringify(newValue))
+  //       } else {
+  //         // Remove cache entry for the transaction
+  //         cache.current.delete(key)
+  //       }
+  //     }
+  //   }
+  // },[cache])
+
   return { fetchWithCache, fetchWithoutCache, clearCache, clearCacheByEndpoint, loading }
 }
 
 function getCacheKey(endpoint: RegisteredEndpoints, params?: object) {
   return `${endpoint}${params ? `@${JSON.stringify(params)}` : ""}`
 }
+
+
